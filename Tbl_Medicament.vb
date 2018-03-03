@@ -14,6 +14,7 @@ Partial Public Class Tbl_Medicament
     Public Property ID_Medicament As Long
     Public Property CodeInternational As String
     Public Property Description As String
+    Public Property cout As Nullable(Of Decimal)
 
     Public Overridable Property Tbl_MedicamentPrescrit As ICollection(Of Tbl_MedicamentPrescrit) = New HashSet(Of Tbl_MedicamentPrescrit)
 

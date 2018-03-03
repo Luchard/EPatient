@@ -23,12 +23,13 @@ Partial Public Class Tbl_Individu
     Public Property isMedecin As Nullable(Of Boolean)
     Public Property VilleNaissance As Nullable(Of Long)
     Public Property ID_Sexe As Nullable(Of Short)
+    Public Property addresse As String
 
     Public Overridable Property Tbl_Sexe As Tbl_Sexe
     Public Overridable Property Tbl_Ville As Tbl_Ville
-    Public Overridable Property Tbl_Specialisation As ICollection(Of Tbl_Specialisation) = New HashSet(Of Tbl_Specialisation)
     Public Overridable Property Tbl_Prescription As ICollection(Of Tbl_Prescription) = New HashSet(Of Tbl_Prescription)
     Public Overridable Property Tbl_Prescription1 As ICollection(Of Tbl_Prescription) = New HashSet(Of Tbl_Prescription)
+    Public Overridable Property Tbl_SpecialisationMedecin As ICollection(Of Tbl_SpecialisationMedecin) = New HashSet(Of Tbl_SpecialisationMedecin)
     Public Overridable Property Tbl_Utilisateur As ICollection(Of Tbl_Utilisateur) = New HashSet(Of Tbl_Utilisateur)
 
 End Class

@@ -16,7 +16,7 @@ Partial Public Class Tbl_Ville
     Public Property ID_Departement As Nullable(Of Short)
 
     Public Overridable Property Tbl_Departement As Tbl_Departement
-    Public Overridable Property Tbl_Individu As ICollection(Of Tbl_Individu) = New HashSet(Of Tbl_Individu)
     Public Overridable Property Tbl_Institution As Tbl_Institution
+    Public Overridable Property Tbl_Individu As ICollection(Of Tbl_Individu) = New HashSet(Of Tbl_Individu)
 
 End Class

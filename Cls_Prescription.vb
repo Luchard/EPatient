@@ -1,4 +1,4 @@
-﻿Public Class Prescription
+﻿Public Class Cls_Prescription
 
 
     Private _code As String
@@ -8,8 +8,8 @@
     Private _lieuConsultation As String
     Private _poidsPatient As Double
     Private _taillePatient As Double
-    Private _patient As Individu
-    Private _medecin As Individu
+    Private _patient As Cls_Individu
+    Private _medecin As Cls_Individu
     Private _codePatient As Long
     Private _codeMedecin As Long
 
@@ -77,20 +77,20 @@
         End Set
     End Property
 
-    Public Property Patient As Individu
+    Public Property Patient As Cls_Individu
         Get
             Return _patient
         End Get
-        Set(value As Individu)
+        Set(value As Cls_Individu)
             _patient = value
         End Set
     End Property
 
-    Public Property Medecin As Individu
+    Public Property Medecin As Cls_Individu
         Get
             Return _medecin
         End Get
-        Set(value As Individu)
+        Set(value As Cls_Individu)
             _medecin = value
         End Set
     End Property
@@ -154,10 +154,20 @@
         Return allPrescription
     End Function
 
+    Public Shared Function ListePrescriptionPatientMedecin(ByVal codeMedecin As Long) As IList
+        Dim allPrescription As IList
+        Using db As New EPatient_dbEntities
+            allPrescription = db.sp_presciption_patient_medecin.Where(Function(s) s.CodeMedecin = codeMedecin).ToList
+
+        End Using
+
+        Return allPrescription
+    End Function
+
     Public Shared Function ListePrescriptionPatientMedecin() As IList
         Dim allPrescription As IList
         Using db As New EPatient_dbEntities
-            allPrescription = db.sp_presciption_patient_medecin.ToList
+            allPrescription = db.sp_presciption_patient_medecin
 
         End Using
 
@@ -180,6 +190,8 @@
 
         End Using
     End Sub
+
+
 
 
     Public Shared Sub AjouterPrescription(_codePatient As Long, _codeMedecin As Long, descriptionDiagnostique As String, descriptionSymptome As String, lieu As String, taille As Double, poids As Double, datePrescription As DateTime)
@@ -210,5 +222,25 @@
         End Using
 
 
+    End Sub
+
+
+
+
+    Public Shared Sub SupprimerPrescription(code As Long)
+        Using db As New EPatient_dbEntities
+
+
+            Dim allPrescription As List(Of Tbl_MedicamentPrescrit) = db.Tbl_MedicamentPrescrit.Where(Function(s) s.CodePrescription = code)
+
+            For Each medicament As Tbl_MedicamentPrescrit In allPrescription
+                db.Tbl_MedicamentPrescrit.Remove(medicament)
+                db.SaveChanges()
+            Next
+            Dim prescription As Tbl_Prescription = db.Tbl_Prescription.Find(code)
+            db.Tbl_Prescription.Remove(prescription)
+            db.SaveChanges()
+
+        End Using
     End Sub
 End Class

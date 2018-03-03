@@ -3,7 +3,7 @@ Imports System.IO
 Imports System.Security.Cryptography
 Imports System.Text
 
-Public Class encrypteway
+Public Class Cls_encrypteway
 
 
 

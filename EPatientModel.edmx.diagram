@@ -6,36 +6,40 @@
     <edmx:Diagrams>
       <Diagram DiagramId="bfe44972881d489dbc10cd670b84a8f2" Name="Diagram1">
         <EntityTypeShape EntityType="EPatient_dbModel.Tbl_Departement" Width="1.5" PointX="3" PointY="3.375" />
-        <EntityTypeShape EntityType="EPatient_dbModel.Tbl_Individu" Width="1.5" PointX="10.5" PointY="5.875" />
         <EntityTypeShape EntityType="EPatient_dbModel.Tbl_Institution" Width="1.5" PointX="3" PointY="6.375" />
-        <EntityTypeShape EntityType="EPatient_dbModel.Tbl_Medicament" Width="1.5" PointX="6" PointY="3.875" />
-        <EntityTypeShape EntityType="EPatient_dbModel.Tbl_MedicamentPrescrit" Width="1.5" PointX="8.25" PointY="6.5" />
         <EntityTypeShape EntityType="EPatient_dbModel.Tbl_Privilege" Width="1.5" PointX="10.5" PointY="11.5" />
         <EntityTypeShape EntityType="EPatient_dbModel.Tbl_Sexe" Width="1.5" PointX="8.25" PointY="3.125" />
-        <EntityTypeShape EntityType="EPatient_dbModel.Tbl_Specialisation" Width="1.5" PointX="12.75" PointY="8.75" />
         <EntityTypeShape EntityType="EPatient_dbModel.Tbl_StatutCompte" Width="1.5" PointX="10.5" PointY="3.125" />
         <EntityTypeShape EntityType="EPatient_dbModel.Tbl_TestLaboratoire" Width="1.5" PointX="0.75" PointY="0.75" />
         <EntityTypeShape EntityType="EPatient_dbModel.Tbl_TypeInstitution" Width="1.5" PointX="0.75" PointY="7.375" />
         <EntityTypeShape EntityType="EPatient_dbModel.Tbl_Ville" Width="1.5" PointX="5.25" PointY="7" />
         <AssociationConnector Association="EPatient_dbModel.FK_Tbl_Ville_Tbl_Departement" />
-        <AssociationConnector Association="EPatient_dbModel.FK_Tbl_Individu_Tbl_Sexe" />
-        <AssociationConnector Association="EPatient_dbModel.FK_Tbl_Individu_Tbl_Ville" />
         <AssociationConnector Association="EPatient_dbModel.FK_Tbl_Institution_Tbl_TypeInstitution" />
-        <AssociationConnector Association="EPatient_dbModel.FK_Tbl_MedicamentPrescrit_Tbl_Institution" />
         <AssociationConnector Association="EPatient_dbModel.FK_Tbl_Ville_Tbl_Institution" />
-        <AssociationConnector Association="EPatient_dbModel.FK_Tbl_MedicamentPrescrit_Tbl_Medicament" />
-        <AssociationConnector Association="EPatient_dbModel.Tbl_SpecialisationMedecin" />
         <EntityTypeShape EntityType="EPatient_dbModel.Tbl_TestPrescrit" Width="1.5" PointX="5.25" PointY="0.75" />
         <AssociationConnector Association="EPatient_dbModel.FK_Tbl_TestPrescrit_Tbl_Institution" />
         <AssociationConnector Association="EPatient_dbModel.FK_Tbl_TestPrescrit_Tbl_TestLaboratoire" />
         <EntityTypeShape EntityType="EPatient_dbModel.Tbl_Prescription" Width="1.5" PointX="12.75" PointY="11.5" />
-        <AssociationConnector Association="EPatient_dbModel.FK_Tbl_Prescription_Tbl_Individu" />
-        <AssociationConnector Association="EPatient_dbModel.FK_Tbl_Prescription_Tbl_Individu_Medecin" />
-        <AssociationConnector Association="EPatient_dbModel.FK_Tbl_MedicamentPrescrit_Tbl_Prescription" />
         <EntityTypeShape EntityType="EPatient_dbModel.Tbl_Utilisateur" Width="1.5" PointX="12.75" PointY="4.625" />
-        <AssociationConnector Association="EPatient_dbModel.FK_Tbl_Utilisateur_Tbl_Individu" />
         <AssociationConnector Association="EPatient_dbModel.FK_Tbl_Utilisateur_Tbl_Privilege" />
         <AssociationConnector Association="EPatient_dbModel.FK_Tbl_Utilisateur_Tbl_StatutCompte" />
+        <EntityTypeShape EntityType="EPatient_dbModel.Tbl_GroupeSanguin" Width="1.5" PointX="7.375" PointY="0.75" />
+        <EntityTypeShape EntityType="EPatient_dbModel.Tbl_SpecialisationMedecin" Width="1.5" PointX="15.75" PointY="7.125" />
+        <EntityTypeShape EntityType="EPatient_dbModel.Tbl_Medicament" Width="1.5" PointX="13.75" PointY="15.625" />
+        <EntityTypeShape EntityType="EPatient_dbModel.Tbl_MedicamentPrescrit" Width="1.5" PointX="16" PointY="9.875" />
+        <AssociationConnector Association="EPatient_dbModel.FK_Tbl_MedicamentPrescrit_Tbl_Institution" />
+        <AssociationConnector Association="EPatient_dbModel.FK_Tbl_MedicamentPrescrit_Tbl_Medicament" />
+        <AssociationConnector Association="EPatient_dbModel.FK_Tbl_MedicamentPrescrit_Tbl_Prescription" />
+        <EntityTypeShape EntityType="EPatient_dbModel.Tbl_Autorisation_Patient" Width="1.5" PointX="5.375" PointY="3.75" />
+        <EntityTypeShape EntityType="EPatient_dbModel.Tbl_Specialisation" Width="1.5" PointX="7.375" PointY="5.875" />
+        <AssociationConnector Association="EPatient_dbModel.FK_Tbl_SpecialisationMedecin_Tbl_Specialisation" />
+        <EntityTypeShape EntityType="EPatient_dbModel.Tbl_Individu" Width="1.5" PointX="10.5" PointY="5.875" />
+        <AssociationConnector Association="EPatient_dbModel.FK_Tbl_Individu_Tbl_Sexe" />
+        <AssociationConnector Association="EPatient_dbModel.FK_Tbl_Individu_Tbl_Ville" />
+        <AssociationConnector Association="EPatient_dbModel.FK_Tbl_Prescription_Tbl_Individu" />
+        <AssociationConnector Association="EPatient_dbModel.FK_Tbl_Prescription_Tbl_Individu_Medecin" />
+        <AssociationConnector Association="EPatient_dbModel.FK_Tbl_SpecialisationMedecin_Tbl_Individu" />
+        <AssociationConnector Association="EPatient_dbModel.FK_Tbl_Utilisateur_Tbl_Individu" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

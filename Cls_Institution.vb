@@ -1,4 +1,4 @@
-﻿Public Class Institution
+﻿Public Class Cls_Institution
 
     Private _nom As String
     Private _email As String

@@ -1,6 +1,6 @@
 ﻿Imports System.Data.SqlClient
 
-Public Class Medicament
+Public Class Cls_Medicament
     Private _code As String
     Private _description As String
 
@@ -77,6 +77,20 @@ Public Class Medicament
             Medicament.CodeInternational = code
             Medicament.Description = decription
             db.Tbl_Medicament.Add(Medicament)
+            db.SaveChanges()
+
+
+        End Using
+    End Sub
+
+    Shared Sub ModifierMedicament(ByVal id_medicament As Long, ByVal code As String, ByVal decription As String)
+        Using db As New EPatient_dbEntities
+
+            Dim Medicament As New Tbl_Medicament
+            Medicament = db.Tbl_Medicament.Find(id_medicament)
+            Medicament.CodeInternational = code
+            Medicament.Description = decription
+
             db.SaveChanges()
 
 

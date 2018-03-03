@@ -21,8 +21,8 @@ Partial Public Class Tbl_Prescription
     Public Property CodePatient As Nullable(Of Long)
     Public Property CodeMedecin As Nullable(Of Long)
 
+    Public Overridable Property Tbl_MedicamentPrescrit As ICollection(Of Tbl_MedicamentPrescrit) = New HashSet(Of Tbl_MedicamentPrescrit)
     Public Overridable Property Tbl_Individu As Tbl_Individu
     Public Overridable Property Tbl_Individu1 As Tbl_Individu
-    Public Overridable Property Tbl_MedicamentPrescrit As ICollection(Of Tbl_MedicamentPrescrit) = New HashSet(Of Tbl_MedicamentPrescrit)
 
 End Class

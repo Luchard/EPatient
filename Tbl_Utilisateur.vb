@@ -19,8 +19,8 @@ Partial Public Class Tbl_Utilisateur
     Public Property ID_StatutCompte As Nullable(Of Short)
     Public Property ID_Privilege As Nullable(Of Short)
 
-    Public Overridable Property Tbl_Individu As Tbl_Individu
     Public Overridable Property Tbl_Privilege As Tbl_Privilege
     Public Overridable Property Tbl_StatutCompte As Tbl_StatutCompte
+    Public Overridable Property Tbl_Individu As Tbl_Individu
 
 End Class

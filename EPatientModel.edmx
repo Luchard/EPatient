@@ -5,12 +5,28 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="EPatient_dbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Tbl_Autorisation_Patient">
+          <Key>
+            <PropertyRef Name="ID_Individu" />
+            <PropertyRef Name="ID_Utilisateur" />
+          </Key>
+          <Property Name="ID_Autorisation" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ID_Individu" Type="bigint" Nullable="false" />
+          <Property Name="ID_Utilisateur" Type="bigint" Nullable="false" />
+        </EntityType>
         <EntityType Name="Tbl_Departement">
           <Key>
             <PropertyRef Name="ID_Departement" />
           </Key>
           <Property Name="ID_Departement" Type="smallint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Libelle" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Tbl_GroupeSanguin">
+          <Key>
+            <PropertyRef Name="ID_Groupe_Sanguin" />
+          </Key>
+          <Property Name="ID_Groupe_Sanguin" Type="smallint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Groupe_Sanguin" Type="nvarchar" MaxLength="15" />
         </EntityType>
         <EntityType Name="Tbl_Individu">
           <Key>
@@ -28,6 +44,7 @@
           <Property Name="isMedecin" Type="bit" />
           <Property Name="VilleNaissance" Type="bigint" />
           <Property Name="ID_Sexe" Type="smallint" />
+          <Property Name="addresse" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="Tbl_Institution">
           <Key>
@@ -51,6 +68,7 @@
           <Property Name="ID_Medicament" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="CodeInternational" Type="nvarchar" MaxLength="50" />
           <Property Name="Description" Type="nvarchar(max)" />
+          <Property Name="cout" Type="decimal" Precision="18" Scale="2" />
         </EntityType>
         <EntityType Name="Tbl_MedicamentPrescrit">
           <Key>
@@ -66,13 +84,14 @@
           <Property Name="isExecute" Type="bit" />
           <Property Name="Fin" Type="datetime" />
           <Property Name="ID_Institution" Type="bigint" />
+          <Property Name="cout_medicament" Type="decimal" Precision="18" Scale="2" />
         </EntityType>
         <EntityType Name="Tbl_Prescription">
           <Key>
             <PropertyRef Name="ID_Prescription" />
           </Key>
           <Property Name="ID_Prescription" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="DateAusculte" Type="datetime" />
+          <Property Name="DateAusculte" Type="date" />
           <Property Name="DescriptionDiagnostique" Type="text" />
           <Property Name="DescriptionSymptome" Type="nvarchar(max)" />
           <Property Name="LieuConsultation" Type="nvarchar" MaxLength="250" />
@@ -100,15 +119,16 @@
             <PropertyRef Name="ID_Specialisation" />
           </Key>
           <Property Name="ID_Specialisation" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Description" Type="nvarchar" MaxLength="50" />
+          <Property Name="Description" Type="nvarchar(max)" />
+          <Property Name="codeSpecialisation" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="Tbl_SpecialisationMedecin">
           <Key>
-            <PropertyRef Name="CodeIndividu" />
-            <PropertyRef Name="CodeSpecialisation" />
+            <PropertyRef Name="ID_specialisation_medecin" />
           </Key>
-          <Property Name="CodeIndividu" Type="bigint" Nullable="false" />
           <Property Name="CodeSpecialisation" Type="bigint" Nullable="false" />
+          <Property Name="CodeIndividu" Type="bigint" Nullable="false" />
+          <Property Name="ID_specialisation_medecin" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
         </EntityType>
         <EntityType Name="Tbl_StatutCompte">
           <Key>
@@ -366,10 +386,15 @@
           </ReferentialConstraint>
         </Association>
         <Function Name="sp_individu" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="sp_liste_utilisateurs" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="sp_ListeIndividu" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="sp_presciption_patient_medecin" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="sp_specialisation" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="sp_specialisation_medecin" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <EntityContainer Name="EPatient_dbModelStoreContainer">
+          <EntitySet Name="Tbl_Autorisation_Patient" EntityType="Self.Tbl_Autorisation_Patient" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Tbl_Departement" EntityType="Self.Tbl_Departement" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tbl_GroupeSanguin" EntityType="Self.Tbl_GroupeSanguin" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Tbl_Individu" EntityType="Self.Tbl_Individu" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Tbl_Institution" EntityType="Self.Tbl_Institution" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Tbl_Medicament" EntityType="Self.Tbl_Medicament" Schema="dbo" store:Type="Tables" />
@@ -460,13 +485,9 @@
       <Schema Namespace="EPatient_dbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="EPatient_dbEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Tbl_Departement" EntityType="EPatient_dbModel.Tbl_Departement" />
-          <EntitySet Name="Tbl_Individu" EntityType="EPatient_dbModel.Tbl_Individu" />
           <EntitySet Name="Tbl_Institution" EntityType="EPatient_dbModel.Tbl_Institution" />
-          <EntitySet Name="Tbl_Medicament" EntityType="EPatient_dbModel.Tbl_Medicament" />
-          <EntitySet Name="Tbl_MedicamentPrescrit" EntityType="EPatient_dbModel.Tbl_MedicamentPrescrit" />
           <EntitySet Name="Tbl_Privilege" EntityType="EPatient_dbModel.Tbl_Privilege" />
           <EntitySet Name="Tbl_Sexe" EntityType="EPatient_dbModel.Tbl_Sexe" />
-          <EntitySet Name="Tbl_Specialisation" EntityType="EPatient_dbModel.Tbl_Specialisation" />
           <EntitySet Name="Tbl_StatutCompte" EntityType="EPatient_dbModel.Tbl_StatutCompte" />
           <EntitySet Name="Tbl_TestLaboratoire" EntityType="EPatient_dbModel.Tbl_TestLaboratoire" />
           <EntitySet Name="Tbl_TypeInstitution" EntityType="EPatient_dbModel.Tbl_TypeInstitution" />
@@ -475,33 +496,13 @@
             <End Role="Tbl_Departement" EntitySet="Tbl_Departement" />
             <End Role="Tbl_Ville" EntitySet="Tbl_Ville" />
           </AssociationSet>
-          <AssociationSet Name="FK_Tbl_Individu_Tbl_Sexe" Association="EPatient_dbModel.FK_Tbl_Individu_Tbl_Sexe">
-            <End Role="Tbl_Sexe" EntitySet="Tbl_Sexe" />
-            <End Role="Tbl_Individu" EntitySet="Tbl_Individu" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Tbl_Individu_Tbl_Ville" Association="EPatient_dbModel.FK_Tbl_Individu_Tbl_Ville">
-            <End Role="Tbl_Ville" EntitySet="Tbl_Ville" />
-            <End Role="Tbl_Individu" EntitySet="Tbl_Individu" />
-          </AssociationSet>
           <AssociationSet Name="FK_Tbl_Institution_Tbl_TypeInstitution" Association="EPatient_dbModel.FK_Tbl_Institution_Tbl_TypeInstitution">
             <End Role="Tbl_TypeInstitution" EntitySet="Tbl_TypeInstitution" />
             <End Role="Tbl_Institution" EntitySet="Tbl_Institution" />
           </AssociationSet>
-          <AssociationSet Name="FK_Tbl_MedicamentPrescrit_Tbl_Institution" Association="EPatient_dbModel.FK_Tbl_MedicamentPrescrit_Tbl_Institution">
-            <End Role="Tbl_Institution" EntitySet="Tbl_Institution" />
-            <End Role="Tbl_MedicamentPrescrit" EntitySet="Tbl_MedicamentPrescrit" />
-          </AssociationSet>
           <AssociationSet Name="FK_Tbl_Ville_Tbl_Institution" Association="EPatient_dbModel.FK_Tbl_Ville_Tbl_Institution">
             <End Role="Tbl_Institution" EntitySet="Tbl_Institution" />
             <End Role="Tbl_Ville" EntitySet="Tbl_Ville" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Tbl_MedicamentPrescrit_Tbl_Medicament" Association="EPatient_dbModel.FK_Tbl_MedicamentPrescrit_Tbl_Medicament">
-            <End Role="Tbl_Medicament" EntitySet="Tbl_Medicament" />
-            <End Role="Tbl_MedicamentPrescrit" EntitySet="Tbl_MedicamentPrescrit" />
-          </AssociationSet>
-          <AssociationSet Name="Tbl_SpecialisationMedecin" Association="EPatient_dbModel.Tbl_SpecialisationMedecin">
-            <End Role="Tbl_Individu" EntitySet="Tbl_Individu" />
-            <End Role="Tbl_Specialisation" EntitySet="Tbl_Specialisation" />
           </AssociationSet>
           <EntitySet Name="Tbl_TestPrescrit" EntityType="EPatient_dbModel.Tbl_TestPrescrit" />
           <AssociationSet Name="FK_Tbl_TestPrescrit_Tbl_Institution" Association="EPatient_dbModel.FK_Tbl_TestPrescrit_Tbl_Institution">
@@ -513,26 +514,9 @@
             <End Role="Tbl_TestPrescrit" EntitySet="Tbl_TestPrescrit" />
           </AssociationSet>
           <EntitySet Name="Tbl_Prescription" EntityType="EPatient_dbModel.Tbl_Prescription" />
-          <AssociationSet Name="FK_Tbl_Prescription_Tbl_Individu" Association="EPatient_dbModel.FK_Tbl_Prescription_Tbl_Individu">
-            <End Role="Tbl_Individu" EntitySet="Tbl_Individu" />
-            <End Role="Tbl_Prescription" EntitySet="Tbl_Prescription" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Tbl_Prescription_Tbl_Individu_Medecin" Association="EPatient_dbModel.FK_Tbl_Prescription_Tbl_Individu_Medecin">
-            <End Role="Tbl_Individu" EntitySet="Tbl_Individu" />
-            <End Role="Tbl_Prescription" EntitySet="Tbl_Prescription" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Tbl_MedicamentPrescrit_Tbl_Prescription" Association="EPatient_dbModel.FK_Tbl_MedicamentPrescrit_Tbl_Prescription">
-            <End Role="Tbl_Prescription" EntitySet="Tbl_Prescription" />
-            <End Role="Tbl_MedicamentPrescrit" EntitySet="Tbl_MedicamentPrescrit" />
-          </AssociationSet>
           <FunctionImport Name="sp_presciption_patient_medecin" ReturnType="Collection(EPatient_dbModel.sp_presciption_patient_medecin_Result)" />
           <FunctionImport Name="sp_individu" ReturnType="Collection(EPatient_dbModel.sp_individu_Result)" />
-          <FunctionImport Name="sp_ListeIndividu" ReturnType="Collection(EPatient_dbModel.sp_ListeIndividu_Result)" />
           <EntitySet Name="Tbl_Utilisateur" EntityType="EPatient_dbModel.Tbl_Utilisateur" />
-          <AssociationSet Name="FK_Tbl_Utilisateur_Tbl_Individu" Association="EPatient_dbModel.FK_Tbl_Utilisateur_Tbl_Individu">
-            <End Role="Tbl_Individu" EntitySet="Tbl_Individu" />
-            <End Role="Tbl_Utilisateur" EntitySet="Tbl_Utilisateur" />
-          </AssociationSet>
           <AssociationSet Name="FK_Tbl_Utilisateur_Tbl_Privilege" Association="EPatient_dbModel.FK_Tbl_Utilisateur_Tbl_Privilege">
             <End Role="Tbl_Privilege" EntitySet="Tbl_Privilege" />
             <End Role="Tbl_Utilisateur" EntitySet="Tbl_Utilisateur" />
@@ -541,7 +525,58 @@
             <End Role="Tbl_StatutCompte" EntitySet="Tbl_StatutCompte" />
             <End Role="Tbl_Utilisateur" EntitySet="Tbl_Utilisateur" />
           </AssociationSet>
-        </EntityContainer>
+          <EntitySet Name="Tbl_GroupeSanguin" EntityType="EPatient_dbModel.Tbl_GroupeSanguin" />
+          <FunctionImport Name="sp_specialisation_medecin" ReturnType="Collection(EPatient_dbModel.sp_specialisation_medecin_Result)" />
+          <FunctionImport Name="sp_specialisation" ReturnType="Collection(EPatient_dbModel.sp_specialisation_Result)" />
+          <EntitySet Name="Tbl_SpecialisationMedecin" EntityType="EPatient_dbModel.Tbl_SpecialisationMedecin" />
+          <FunctionImport Name="sp_ListeIndividu" ReturnType="Collection(EPatient_dbModel.sp_ListeIndividu_Result)" />
+          <EntitySet Name="Tbl_Medicament" EntityType="EPatient_dbModel.Tbl_Medicament" />
+          <EntitySet Name="Tbl_MedicamentPrescrit" EntityType="EPatient_dbModel.Tbl_MedicamentPrescrit" />
+          <AssociationSet Name="FK_Tbl_MedicamentPrescrit_Tbl_Institution" Association="EPatient_dbModel.FK_Tbl_MedicamentPrescrit_Tbl_Institution">
+            <End Role="Tbl_Institution" EntitySet="Tbl_Institution" />
+            <End Role="Tbl_MedicamentPrescrit" EntitySet="Tbl_MedicamentPrescrit" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tbl_MedicamentPrescrit_Tbl_Medicament" Association="EPatient_dbModel.FK_Tbl_MedicamentPrescrit_Tbl_Medicament">
+            <End Role="Tbl_Medicament" EntitySet="Tbl_Medicament" />
+            <End Role="Tbl_MedicamentPrescrit" EntitySet="Tbl_MedicamentPrescrit" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tbl_MedicamentPrescrit_Tbl_Prescription" Association="EPatient_dbModel.FK_Tbl_MedicamentPrescrit_Tbl_Prescription">
+            <End Role="Tbl_Prescription" EntitySet="Tbl_Prescription" />
+            <End Role="Tbl_MedicamentPrescrit" EntitySet="Tbl_MedicamentPrescrit" />
+          </AssociationSet>
+          <FunctionImport Name="sp_liste_utilisateurs" ReturnType="Collection(EPatient_dbModel.sp_liste_utilisateurs_Result)" />
+          <EntitySet Name="Tbl_Autorisation_Patient" EntityType="EPatient_dbModel.Tbl_Autorisation_Patient" />
+          <EntitySet Name="Tbl_Specialisation" EntityType="EPatient_dbModel.Tbl_Specialisation" />
+          <AssociationSet Name="FK_Tbl_SpecialisationMedecin_Tbl_Specialisation" Association="EPatient_dbModel.FK_Tbl_SpecialisationMedecin_Tbl_Specialisation">
+            <End Role="Tbl_Specialisation" EntitySet="Tbl_Specialisation" />
+            <End Role="Tbl_SpecialisationMedecin" EntitySet="Tbl_SpecialisationMedecin" />
+          </AssociationSet>
+          <EntitySet Name="Tbl_Individu" EntityType="EPatient_dbModel.Tbl_Individu" />
+          <AssociationSet Name="FK_Tbl_Individu_Tbl_Sexe" Association="EPatient_dbModel.FK_Tbl_Individu_Tbl_Sexe">
+            <End Role="Tbl_Sexe" EntitySet="Tbl_Sexe" />
+            <End Role="Tbl_Individu" EntitySet="Tbl_Individu" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tbl_Individu_Tbl_Ville" Association="EPatient_dbModel.FK_Tbl_Individu_Tbl_Ville">
+            <End Role="Tbl_Ville" EntitySet="Tbl_Ville" />
+            <End Role="Tbl_Individu" EntitySet="Tbl_Individu" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tbl_Prescription_Tbl_Individu" Association="EPatient_dbModel.FK_Tbl_Prescription_Tbl_Individu">
+            <End Role="Tbl_Individu" EntitySet="Tbl_Individu" />
+            <End Role="Tbl_Prescription" EntitySet="Tbl_Prescription" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tbl_Prescription_Tbl_Individu_Medecin" Association="EPatient_dbModel.FK_Tbl_Prescription_Tbl_Individu_Medecin">
+            <End Role="Tbl_Individu" EntitySet="Tbl_Individu" />
+            <End Role="Tbl_Prescription" EntitySet="Tbl_Prescription" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tbl_SpecialisationMedecin_Tbl_Individu" Association="EPatient_dbModel.FK_Tbl_SpecialisationMedecin_Tbl_Individu">
+            <End Role="Tbl_Individu" EntitySet="Tbl_Individu" />
+            <End Role="Tbl_SpecialisationMedecin" EntitySet="Tbl_SpecialisationMedecin" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tbl_Utilisateur_Tbl_Individu" Association="EPatient_dbModel.FK_Tbl_Utilisateur_Tbl_Individu">
+            <End Role="Tbl_Individu" EntitySet="Tbl_Individu" />
+            <End Role="Tbl_Utilisateur" EntitySet="Tbl_Utilisateur" />
+          </AssociationSet>
+          </EntityContainer>
         <EntityType Name="Tbl_Departement">
           <Key>
             <PropertyRef Name="ID_Departement" />
@@ -549,29 +584,6 @@
           <Property Name="ID_Departement" Type="Int16" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Libelle" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Tbl_Ville" Relationship="EPatient_dbModel.FK_Tbl_Ville_Tbl_Departement" FromRole="Tbl_Departement" ToRole="Tbl_Ville" />
-        </EntityType>
-        <EntityType Name="Tbl_Individu">
-          <Key>
-            <PropertyRef Name="ID_Individu" />
-          </Key>
-          <Property Name="ID_Individu" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Nom" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Prenom" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="NomPere" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="NomMere" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="DateNaissance" Type="DateTime" Precision="0" />
-          <Property Name="LieuNaissance" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Identification" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="GroupeSanguin" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="isMedecin" Type="Boolean" />
-          <Property Name="VilleNaissance" Type="Int64" />
-          <Property Name="ID_Sexe" Type="Int16" />
-          <NavigationProperty Name="Tbl_Sexe" Relationship="EPatient_dbModel.FK_Tbl_Individu_Tbl_Sexe" FromRole="Tbl_Individu" ToRole="Tbl_Sexe" />
-          <NavigationProperty Name="Tbl_Ville" Relationship="EPatient_dbModel.FK_Tbl_Individu_Tbl_Ville" FromRole="Tbl_Individu" ToRole="Tbl_Ville" />
-          <NavigationProperty Name="Tbl_Specialisation" Relationship="EPatient_dbModel.Tbl_SpecialisationMedecin" FromRole="Tbl_Individu" ToRole="Tbl_Specialisation" />
-          <NavigationProperty Name="Tbl_Prescription" Relationship="EPatient_dbModel.FK_Tbl_Prescription_Tbl_Individu" FromRole="Tbl_Individu" ToRole="Tbl_Prescription" />
-          <NavigationProperty Name="Tbl_Prescription1" Relationship="EPatient_dbModel.FK_Tbl_Prescription_Tbl_Individu_Medecin" FromRole="Tbl_Individu" ToRole="Tbl_Prescription" />
-          <NavigationProperty Name="Tbl_Utilisateur" Relationship="EPatient_dbModel.FK_Tbl_Utilisateur_Tbl_Individu" FromRole="Tbl_Individu" ToRole="Tbl_Utilisateur" />
         </EntityType>
         <EntityType Name="Tbl_Institution">
           <Key>
@@ -588,36 +600,9 @@
           <Property Name="ID_TypeInstitution" Type="Int16" />
           <Property Name="ID_localisation" Type="Int64" />
           <NavigationProperty Name="Tbl_TypeInstitution" Relationship="EPatient_dbModel.FK_Tbl_Institution_Tbl_TypeInstitution" FromRole="Tbl_Institution" ToRole="Tbl_TypeInstitution" />
-          <NavigationProperty Name="Tbl_MedicamentPrescrit" Relationship="EPatient_dbModel.FK_Tbl_MedicamentPrescrit_Tbl_Institution" FromRole="Tbl_Institution" ToRole="Tbl_MedicamentPrescrit" />
           <NavigationProperty Name="Tbl_Ville" Relationship="EPatient_dbModel.FK_Tbl_Ville_Tbl_Institution" FromRole="Tbl_Institution" ToRole="Tbl_Ville" />
           <NavigationProperty Name="Tbl_TestPrescrit" Relationship="EPatient_dbModel.FK_Tbl_TestPrescrit_Tbl_Institution" FromRole="Tbl_Institution" ToRole="Tbl_TestPrescrit" />
-        </EntityType>
-        <EntityType Name="Tbl_Medicament">
-          <Key>
-            <PropertyRef Name="ID_Medicament" />
-          </Key>
-          <Property Name="ID_Medicament" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="CodeInternational" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Tbl_MedicamentPrescrit" Relationship="EPatient_dbModel.FK_Tbl_MedicamentPrescrit_Tbl_Medicament" FromRole="Tbl_Medicament" ToRole="Tbl_MedicamentPrescrit" />
-        </EntityType>
-        <EntityType Name="Tbl_MedicamentPrescrit">
-          <Key>
-            <PropertyRef Name="CodeMedicament" />
-            <PropertyRef Name="CodePrescription" />
-          </Key>
-          <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="CodeMedicament" Type="Int64" Nullable="false" />
-          <Property Name="CodePrescription" Type="Int64" Nullable="false" />
-          <Property Name="Debut" Type="DateTime" Precision="3" />
-          <Property Name="Dosage" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="EffeSecondaire" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="isExecute" Type="Boolean" />
-          <Property Name="Fin" Type="DateTime" Precision="3" />
-          <Property Name="ID_Institution" Type="Int64" />
-          <NavigationProperty Name="Tbl_Institution" Relationship="EPatient_dbModel.FK_Tbl_MedicamentPrescrit_Tbl_Institution" FromRole="Tbl_MedicamentPrescrit" ToRole="Tbl_Institution" />
-          <NavigationProperty Name="Tbl_Medicament" Relationship="EPatient_dbModel.FK_Tbl_MedicamentPrescrit_Tbl_Medicament" FromRole="Tbl_MedicamentPrescrit" ToRole="Tbl_Medicament" />
-          <NavigationProperty Name="Tbl_Prescription" Relationship="EPatient_dbModel.FK_Tbl_MedicamentPrescrit_Tbl_Prescription" FromRole="Tbl_MedicamentPrescrit" ToRole="Tbl_Prescription" />
+          <NavigationProperty Name="Tbl_MedicamentPrescrit" Relationship="EPatient_dbModel.FK_Tbl_MedicamentPrescrit_Tbl_Institution" FromRole="Tbl_Institution" ToRole="Tbl_MedicamentPrescrit" />
         </EntityType>
         <EntityType Name="Tbl_Privilege">
           <Key>
@@ -634,14 +619,6 @@
           <Property Name="ID_Sexe" Type="Int16" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="sexe" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Tbl_Individu" Relationship="EPatient_dbModel.FK_Tbl_Individu_Tbl_Sexe" FromRole="Tbl_Sexe" ToRole="Tbl_Individu" />
-        </EntityType>
-        <EntityType Name="Tbl_Specialisation">
-          <Key>
-            <PropertyRef Name="ID_Specialisation" />
-          </Key>
-          <Property Name="ID_Specialisation" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Description" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Tbl_Individu" Relationship="EPatient_dbModel.Tbl_SpecialisationMedecin" FromRole="Tbl_Specialisation" ToRole="Tbl_Individu" />
         </EntityType>
         <EntityType Name="Tbl_StatutCompte">
           <Key>
@@ -676,8 +653,8 @@
           <Property Name="Libelle" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="ID_Departement" Type="Int16" />
           <NavigationProperty Name="Tbl_Departement" Relationship="EPatient_dbModel.FK_Tbl_Ville_Tbl_Departement" FromRole="Tbl_Ville" ToRole="Tbl_Departement" />
-          <NavigationProperty Name="Tbl_Individu" Relationship="EPatient_dbModel.FK_Tbl_Individu_Tbl_Ville" FromRole="Tbl_Ville" ToRole="Tbl_Individu" />
           <NavigationProperty Name="Tbl_Institution" Relationship="EPatient_dbModel.FK_Tbl_Ville_Tbl_Institution" FromRole="Tbl_Ville" ToRole="Tbl_Institution" />
+          <NavigationProperty Name="Tbl_Individu" Relationship="EPatient_dbModel.FK_Tbl_Individu_Tbl_Ville" FromRole="Tbl_Ville" ToRole="Tbl_Individu" />
         </EntityType>
         <Association Name="FK_Tbl_Ville_Tbl_Departement">
           <End Type="EPatient_dbModel.Tbl_Departement" Role="Tbl_Departement" Multiplicity="0..1" />
@@ -688,30 +665,6 @@
             </Principal>
             <Dependent Role="Tbl_Ville">
               <PropertyRef Name="ID_Departement" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Tbl_Individu_Tbl_Sexe">
-          <End Type="EPatient_dbModel.Tbl_Sexe" Role="Tbl_Sexe" Multiplicity="0..1" />
-          <End Type="EPatient_dbModel.Tbl_Individu" Role="Tbl_Individu" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Tbl_Sexe">
-              <PropertyRef Name="ID_Sexe" />
-            </Principal>
-            <Dependent Role="Tbl_Individu">
-              <PropertyRef Name="ID_Sexe" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Tbl_Individu_Tbl_Ville">
-          <End Type="EPatient_dbModel.Tbl_Ville" Role="Tbl_Ville" Multiplicity="0..1" />
-          <End Type="EPatient_dbModel.Tbl_Individu" Role="Tbl_Individu" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Tbl_Ville">
-              <PropertyRef Name="ID_Ville" />
-            </Principal>
-            <Dependent Role="Tbl_Individu">
-              <PropertyRef Name="VilleNaissance" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -727,18 +680,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Tbl_MedicamentPrescrit_Tbl_Institution">
-          <End Type="EPatient_dbModel.Tbl_Institution" Role="Tbl_Institution" Multiplicity="0..1" />
-          <End Type="EPatient_dbModel.Tbl_MedicamentPrescrit" Role="Tbl_MedicamentPrescrit" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Tbl_Institution">
-              <PropertyRef Name="ID_Institution" />
-            </Principal>
-            <Dependent Role="Tbl_MedicamentPrescrit">
-              <PropertyRef Name="ID_Institution" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Tbl_Ville_Tbl_Institution">
           <End Type="EPatient_dbModel.Tbl_Institution" Role="Tbl_Institution" Multiplicity="1" />
           <End Type="EPatient_dbModel.Tbl_Ville" Role="Tbl_Ville" Multiplicity="0..1" />
@@ -750,22 +691,6 @@
               <PropertyRef Name="ID_Ville" />
             </Dependent>
           </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Tbl_MedicamentPrescrit_Tbl_Medicament">
-          <End Type="EPatient_dbModel.Tbl_Medicament" Role="Tbl_Medicament" Multiplicity="1" />
-          <End Type="EPatient_dbModel.Tbl_MedicamentPrescrit" Role="Tbl_MedicamentPrescrit" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Tbl_Medicament">
-              <PropertyRef Name="ID_Medicament" />
-            </Principal>
-            <Dependent Role="Tbl_MedicamentPrescrit">
-              <PropertyRef Name="CodeMedicament" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="Tbl_SpecialisationMedecin">
-          <End Type="EPatient_dbModel.Tbl_Individu" Role="Tbl_Individu" Multiplicity="*" />
-          <End Type="EPatient_dbModel.Tbl_Specialisation" Role="Tbl_Specialisation" Multiplicity="*" />
         </Association>
         <EntityType Name="Tbl_TestPrescrit">
           <Key>
@@ -807,7 +732,7 @@
             <PropertyRef Name="ID_Prescription" />
           </Key>
           <Property Name="ID_Prescription" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="DateAusculte" Type="DateTime" Precision="3" />
+          <Property Name="DateAusculte" Type="DateTime" Precision="0" />
           <Property Name="DescriptionDiagnostique" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="DescriptionSymptome" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="LieuConsultation" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
@@ -815,46 +740,10 @@
           <Property Name="TaillePatient" Type="Decimal" Precision="18" Scale="4" />
           <Property Name="CodePatient" Type="Int64" />
           <Property Name="CodeMedecin" Type="Int64" />
+          <NavigationProperty Name="Tbl_MedicamentPrescrit" Relationship="EPatient_dbModel.FK_Tbl_MedicamentPrescrit_Tbl_Prescription" FromRole="Tbl_Prescription" ToRole="Tbl_MedicamentPrescrit" />
           <NavigationProperty Name="Tbl_Individu" Relationship="EPatient_dbModel.FK_Tbl_Prescription_Tbl_Individu" FromRole="Tbl_Prescription" ToRole="Tbl_Individu" />
           <NavigationProperty Name="Tbl_Individu1" Relationship="EPatient_dbModel.FK_Tbl_Prescription_Tbl_Individu_Medecin" FromRole="Tbl_Prescription" ToRole="Tbl_Individu" />
-          <NavigationProperty Name="Tbl_MedicamentPrescrit" Relationship="EPatient_dbModel.FK_Tbl_MedicamentPrescrit_Tbl_Prescription" FromRole="Tbl_Prescription" ToRole="Tbl_MedicamentPrescrit" />
-        </EntityType>
-        <Association Name="FK_Tbl_Prescription_Tbl_Individu">
-          <End Type="EPatient_dbModel.Tbl_Individu" Role="Tbl_Individu" Multiplicity="0..1" />
-          <End Type="EPatient_dbModel.Tbl_Prescription" Role="Tbl_Prescription" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Tbl_Individu">
-              <PropertyRef Name="ID_Individu" />
-            </Principal>
-            <Dependent Role="Tbl_Prescription">
-              <PropertyRef Name="CodePatient" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Tbl_Prescription_Tbl_Individu_Medecin">
-          <End Type="EPatient_dbModel.Tbl_Individu" Role="Tbl_Individu" Multiplicity="0..1" />
-          <End Type="EPatient_dbModel.Tbl_Prescription" Role="Tbl_Prescription" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Tbl_Individu">
-              <PropertyRef Name="ID_Individu" />
-            </Principal>
-            <Dependent Role="Tbl_Prescription">
-              <PropertyRef Name="CodeMedecin" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Tbl_MedicamentPrescrit_Tbl_Prescription">
-          <End Type="EPatient_dbModel.Tbl_Prescription" Role="Tbl_Prescription" Multiplicity="1" />
-          <End Type="EPatient_dbModel.Tbl_MedicamentPrescrit" Role="Tbl_MedicamentPrescrit" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Tbl_Prescription">
-              <PropertyRef Name="ID_Prescription" />
-            </Principal>
-            <Dependent Role="Tbl_MedicamentPrescrit">
-              <PropertyRef Name="CodePrescription" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
+          </EntityType>
         <ComplexType Name="sp_presciption_patient_medecin_Result">
           <Property Type="Int64" Name="ID_Prescription" Nullable="false" />
           <Property Type="DateTime" Name="DateAusculte" Nullable="true" Precision="23" />
@@ -876,20 +765,6 @@
           <Property Type="Boolean" Name="isMedecin" Nullable="true" />
           <Property Type="String" Name="identification" Nullable="true" MaxLength="250" />
         </ComplexType>
-        <ComplexType Name="sp_ListeIndividu_Result">
-          <Property Type="Int64" Name="ID_Individu" Nullable="false" />
-          <Property Type="String" Name="nom_complet" Nullable="true" MaxLength="303" />
-          <Property Type="String" Name="NomPere" Nullable="true" MaxLength="50" />
-          <Property Type="String" Name="NomMere" Nullable="true" MaxLength="50" />
-          <Property Type="DateTime" Name="DateNaissance" Nullable="true" />
-          <Property Type="String" Name="LieuNaissance" Nullable="true" MaxLength="50" />
-          <Property Type="String" Name="Identification" Nullable="true" MaxLength="250" />
-          <Property Type="String" Name="GroupeSanguin" Nullable="true" MaxLength="10" />
-          <Property Type="Boolean" Name="isMedecin" Nullable="true" />
-          <Property Type="Int64" Name="VilleNaissance" Nullable="true" />
-          <Property Type="Int16" Name="ID_Sexe" Nullable="true" />
-          <Property Type="Int32" Name="age" Nullable="true" />
-        </ComplexType>
         <EntityType Name="Tbl_Utilisateur">
           <Key>
             <PropertyRef Name="ID_Utilisateur" />
@@ -901,22 +776,10 @@
           <Property Name="ID_Individu" Type="Int64" />
           <Property Name="ID_StatutCompte" Type="Int16" />
           <Property Name="ID_Privilege" Type="Int16" />
-          <NavigationProperty Name="Tbl_Individu" Relationship="EPatient_dbModel.FK_Tbl_Utilisateur_Tbl_Individu" FromRole="Tbl_Utilisateur" ToRole="Tbl_Individu" />
           <NavigationProperty Name="Tbl_Privilege" Relationship="EPatient_dbModel.FK_Tbl_Utilisateur_Tbl_Privilege" FromRole="Tbl_Utilisateur" ToRole="Tbl_Privilege" />
           <NavigationProperty Name="Tbl_StatutCompte" Relationship="EPatient_dbModel.FK_Tbl_Utilisateur_Tbl_StatutCompte" FromRole="Tbl_Utilisateur" ToRole="Tbl_StatutCompte" />
+          <NavigationProperty Name="Tbl_Individu" Relationship="EPatient_dbModel.FK_Tbl_Utilisateur_Tbl_Individu" FromRole="Tbl_Utilisateur" ToRole="Tbl_Individu" />
         </EntityType>
-        <Association Name="FK_Tbl_Utilisateur_Tbl_Individu">
-          <End Type="EPatient_dbModel.Tbl_Individu" Role="Tbl_Individu" Multiplicity="0..1" />
-          <End Type="EPatient_dbModel.Tbl_Utilisateur" Role="Tbl_Utilisateur" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Tbl_Individu">
-              <PropertyRef Name="ID_Individu" />
-            </Principal>
-            <Dependent Role="Tbl_Utilisateur">
-              <PropertyRef Name="ID_Individu" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Tbl_Utilisateur_Tbl_Privilege">
           <End Type="EPatient_dbModel.Tbl_Privilege" Role="Tbl_Privilege" Multiplicity="0..1" />
           <End Type="EPatient_dbModel.Tbl_Utilisateur" Role="Tbl_Utilisateur" Multiplicity="*" />
@@ -941,7 +804,261 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-      </Schema>
+        <EntityType Name="Tbl_GroupeSanguin">
+          <Key>
+            <PropertyRef Name="ID_Groupe_Sanguin" />
+          </Key>
+          <Property Name="ID_Groupe_Sanguin" Type="Int16" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Groupe_Sanguin" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <ComplexType Name="sp_specialisation_medecin_Result">
+          <Property Type="Int64" Name="ID_Individu" Nullable="false" />
+          <Property Type="String" Name="Nom" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Prenom" Nullable="true" MaxLength="250" />
+          <Property Type="Boolean" Name="isMedecin" Nullable="true" />
+          <Property Type="Int64" Name="ID_Specialisation" Nullable="false" />
+          <Property Type="String" Name="Description" Nullable="true" MaxLength="50" />
+          <Property Type="Int64" Name="CodeIndividu" Nullable="false" />
+          <Property Type="Int64" Name="CodeSpecialisation" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="sp_specialisation_Result">
+          <Property Type="Int64" Name="ID_Individu" Nullable="false" />
+          <Property Type="String" Name="Nom" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Prenom" Nullable="true" MaxLength="250" />
+          <Property Type="Boolean" Name="isMedecin" Nullable="true" />
+          <Property Type="Int64" Name="ID_Specialisation" Nullable="false" />
+          <Property Type="String" Name="Description" Nullable="true" MaxLength="50" />
+          <Property Type="Int64" Name="CodeIndividu" Nullable="false" />
+          <Property Type="Int64" Name="CodeSpecialisation" Nullable="false" />
+        </ComplexType>
+        <EntityType Name="Tbl_SpecialisationMedecin">
+          <Key>
+            <PropertyRef Name="ID_specialisation_medecin" />
+          </Key>
+          <Property Name="CodeSpecialisation" Type="Int64" Nullable="false" />
+          <Property Name="CodeIndividu" Type="Int64" Nullable="false" />
+          <Property Name="ID_specialisation_medecin" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="Tbl_Specialisation" Relationship="EPatient_dbModel.FK_Tbl_SpecialisationMedecin_Tbl_Specialisation" FromRole="Tbl_SpecialisationMedecin" ToRole="Tbl_Specialisation" />
+          <NavigationProperty Name="Tbl_Individu" Relationship="EPatient_dbModel.FK_Tbl_SpecialisationMedecin_Tbl_Individu" FromRole="Tbl_SpecialisationMedecin" ToRole="Tbl_Individu" />
+        </EntityType>
+        <ComplexType Name="sp_ListeIndividu_Result">
+          <Property Type="Int64" Name="ID_Individu" Nullable="false" />
+          <Property Type="String" Name="nom_complet" Nullable="true" MaxLength="303" />
+          <Property Type="String" Name="NomPere" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="NomMere" Nullable="true" MaxLength="50" />
+          <Property Type="DateTime" Name="DateNaissance" Nullable="true" />
+          <Property Type="String" Name="LieuNaissance" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Identification" Nullable="true" MaxLength="250" />
+          <Property Type="String" Name="GroupeSanguin" Nullable="true" MaxLength="10" />
+          <Property Type="Boolean" Name="isMedecin" Nullable="true" />
+          <Property Type="Int64" Name="VilleNaissance" Nullable="true" />
+          <Property Type="Int16" Name="ID_Sexe" Nullable="true" />
+          <Property Type="String" Name="addresse" Nullable="true" />
+          <Property Type="Int32" Name="age" Nullable="true" />
+        </ComplexType>
+        <EntityType Name="Tbl_Medicament">
+          <Key>
+            <PropertyRef Name="ID_Medicament" />
+          </Key>
+          <Property Name="ID_Medicament" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CodeInternational" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="cout" Type="Decimal" Precision="18" Scale="2" />
+          <NavigationProperty Name="Tbl_MedicamentPrescrit" Relationship="EPatient_dbModel.FK_Tbl_MedicamentPrescrit_Tbl_Medicament" FromRole="Tbl_Medicament" ToRole="Tbl_MedicamentPrescrit" />
+        </EntityType>
+        <EntityType Name="Tbl_MedicamentPrescrit">
+          <Key>
+            <PropertyRef Name="CodeMedicament" />
+            <PropertyRef Name="CodePrescription" />
+          </Key>
+          <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CodeMedicament" Type="Int64" Nullable="false" />
+          <Property Name="CodePrescription" Type="Int64" Nullable="false" />
+          <Property Name="Debut" Type="DateTime" Precision="3" />
+          <Property Name="Dosage" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="EffeSecondaire" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="isExecute" Type="Boolean" />
+          <Property Name="Fin" Type="DateTime" Precision="3" />
+          <Property Name="ID_Institution" Type="Int64" />
+          <Property Name="cout_medicament" Type="Decimal" Precision="18" Scale="2" />
+          <NavigationProperty Name="Tbl_Institution" Relationship="EPatient_dbModel.FK_Tbl_MedicamentPrescrit_Tbl_Institution" FromRole="Tbl_MedicamentPrescrit" ToRole="Tbl_Institution" />
+          <NavigationProperty Name="Tbl_Medicament" Relationship="EPatient_dbModel.FK_Tbl_MedicamentPrescrit_Tbl_Medicament" FromRole="Tbl_MedicamentPrescrit" ToRole="Tbl_Medicament" />
+          <NavigationProperty Name="Tbl_Prescription" Relationship="EPatient_dbModel.FK_Tbl_MedicamentPrescrit_Tbl_Prescription" FromRole="Tbl_MedicamentPrescrit" ToRole="Tbl_Prescription" />
+        </EntityType>
+        <Association Name="FK_Tbl_MedicamentPrescrit_Tbl_Institution">
+          <End Type="EPatient_dbModel.Tbl_Institution" Role="Tbl_Institution" Multiplicity="0..1" />
+          <End Type="EPatient_dbModel.Tbl_MedicamentPrescrit" Role="Tbl_MedicamentPrescrit" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_Institution">
+              <PropertyRef Name="ID_Institution" />
+            </Principal>
+            <Dependent Role="Tbl_MedicamentPrescrit">
+              <PropertyRef Name="ID_Institution" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tbl_MedicamentPrescrit_Tbl_Medicament">
+          <End Type="EPatient_dbModel.Tbl_Medicament" Role="Tbl_Medicament" Multiplicity="1" />
+          <End Type="EPatient_dbModel.Tbl_MedicamentPrescrit" Role="Tbl_MedicamentPrescrit" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_Medicament">
+              <PropertyRef Name="ID_Medicament" />
+            </Principal>
+            <Dependent Role="Tbl_MedicamentPrescrit">
+              <PropertyRef Name="CodeMedicament" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tbl_MedicamentPrescrit_Tbl_Prescription">
+          <End Type="EPatient_dbModel.Tbl_Prescription" Role="Tbl_Prescription" Multiplicity="1" />
+          <End Type="EPatient_dbModel.Tbl_MedicamentPrescrit" Role="Tbl_MedicamentPrescrit" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_Prescription">
+              <PropertyRef Name="ID_Prescription" />
+            </Principal>
+            <Dependent Role="Tbl_MedicamentPrescrit">
+              <PropertyRef Name="CodePrescription" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <ComplexType Name="sp_liste_utilisateurs_Result">
+          <Property Type="Int16" Name="ID_Privilege" Nullable="false" />
+          <Property Type="String" Name="Libelle" Nullable="true" MaxLength="50" />
+          <Property Type="Int16" Name="ID_StatutCompte" Nullable="false" />
+          <Property Type="String" Name="libelle_statut_compte" Nullable="true" MaxLength="50" />
+          <Property Type="Int64" Name="ID_Individu" Nullable="false" />
+          <Property Type="String" Name="Nom" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Prenom" Nullable="true" MaxLength="250" />
+          <Property Type="Int64" Name="ID_Utilisateur" Nullable="false" />
+          <Property Type="String" Name="username" Nullable="true" MaxLength="50" />
+        </ComplexType>
+        <EntityType Name="Tbl_Autorisation_Patient">
+          <Key>
+            <PropertyRef Name="ID_Individu" />
+            <PropertyRef Name="ID_Utilisateur" />
+          </Key>
+          <Property Name="ID_Autorisation" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ID_Individu" Type="Int64" Nullable="false" />
+          <Property Name="ID_Utilisateur" Type="Int64" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Tbl_Specialisation">
+          <Key>
+            <PropertyRef Name="ID_Specialisation" />
+          </Key>
+          <Property Name="ID_Specialisation" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="codeSpecialisation" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Tbl_SpecialisationMedecin" Relationship="EPatient_dbModel.FK_Tbl_SpecialisationMedecin_Tbl_Specialisation" FromRole="Tbl_Specialisation" ToRole="Tbl_SpecialisationMedecin" />
+        </EntityType>
+        <Association Name="FK_Tbl_SpecialisationMedecin_Tbl_Specialisation">
+          <End Type="EPatient_dbModel.Tbl_Specialisation" Role="Tbl_Specialisation" Multiplicity="1" />
+          <End Type="EPatient_dbModel.Tbl_SpecialisationMedecin" Role="Tbl_SpecialisationMedecin" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_Specialisation">
+              <PropertyRef Name="ID_Specialisation" />
+            </Principal>
+            <Dependent Role="Tbl_SpecialisationMedecin">
+              <PropertyRef Name="CodeSpecialisation" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Tbl_Individu">
+          <Key>
+            <PropertyRef Name="ID_Individu" />
+          </Key>
+          <Property Name="ID_Individu" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nom" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Prenom" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="NomPere" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="NomMere" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="DateNaissance" Type="DateTime" Precision="0" />
+          <Property Name="LieuNaissance" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Identification" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="GroupeSanguin" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="isMedecin" Type="Boolean" />
+          <Property Name="VilleNaissance" Type="Int64" />
+          <Property Name="ID_Sexe" Type="Int16" />
+          <Property Name="addresse" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Tbl_Sexe" Relationship="EPatient_dbModel.FK_Tbl_Individu_Tbl_Sexe" FromRole="Tbl_Individu" ToRole="Tbl_Sexe" />
+          <NavigationProperty Name="Tbl_Ville" Relationship="EPatient_dbModel.FK_Tbl_Individu_Tbl_Ville" FromRole="Tbl_Individu" ToRole="Tbl_Ville" />
+          <NavigationProperty Name="Tbl_Prescription" Relationship="EPatient_dbModel.FK_Tbl_Prescription_Tbl_Individu" FromRole="Tbl_Individu" ToRole="Tbl_Prescription" />
+          <NavigationProperty Name="Tbl_Prescription1" Relationship="EPatient_dbModel.FK_Tbl_Prescription_Tbl_Individu_Medecin" FromRole="Tbl_Individu" ToRole="Tbl_Prescription" />
+          <NavigationProperty Name="Tbl_SpecialisationMedecin" Relationship="EPatient_dbModel.FK_Tbl_SpecialisationMedecin_Tbl_Individu" FromRole="Tbl_Individu" ToRole="Tbl_SpecialisationMedecin" />
+          <NavigationProperty Name="Tbl_Utilisateur" Relationship="EPatient_dbModel.FK_Tbl_Utilisateur_Tbl_Individu" FromRole="Tbl_Individu" ToRole="Tbl_Utilisateur" />
+        </EntityType>
+        <Association Name="FK_Tbl_Individu_Tbl_Sexe">
+          <End Type="EPatient_dbModel.Tbl_Sexe" Role="Tbl_Sexe" Multiplicity="0..1" />
+          <End Type="EPatient_dbModel.Tbl_Individu" Role="Tbl_Individu" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_Sexe">
+              <PropertyRef Name="ID_Sexe" />
+            </Principal>
+            <Dependent Role="Tbl_Individu">
+              <PropertyRef Name="ID_Sexe" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tbl_Individu_Tbl_Ville">
+          <End Type="EPatient_dbModel.Tbl_Ville" Role="Tbl_Ville" Multiplicity="0..1" />
+          <End Type="EPatient_dbModel.Tbl_Individu" Role="Tbl_Individu" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_Ville">
+              <PropertyRef Name="ID_Ville" />
+            </Principal>
+            <Dependent Role="Tbl_Individu">
+              <PropertyRef Name="VilleNaissance" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tbl_Prescription_Tbl_Individu">
+          <End Type="EPatient_dbModel.Tbl_Individu" Role="Tbl_Individu" Multiplicity="0..1" />
+          <End Type="EPatient_dbModel.Tbl_Prescription" Role="Tbl_Prescription" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_Individu">
+              <PropertyRef Name="ID_Individu" />
+            </Principal>
+            <Dependent Role="Tbl_Prescription">
+              <PropertyRef Name="CodePatient" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tbl_Prescription_Tbl_Individu_Medecin">
+          <End Type="EPatient_dbModel.Tbl_Individu" Role="Tbl_Individu" Multiplicity="0..1" />
+          <End Type="EPatient_dbModel.Tbl_Prescription" Role="Tbl_Prescription" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_Individu">
+              <PropertyRef Name="ID_Individu" />
+            </Principal>
+            <Dependent Role="Tbl_Prescription">
+              <PropertyRef Name="CodeMedecin" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tbl_SpecialisationMedecin_Tbl_Individu">
+          <End Type="EPatient_dbModel.Tbl_Individu" Role="Tbl_Individu" Multiplicity="1" />
+          <End Type="EPatient_dbModel.Tbl_SpecialisationMedecin" Role="Tbl_SpecialisationMedecin" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_Individu">
+              <PropertyRef Name="ID_Individu" />
+            </Principal>
+            <Dependent Role="Tbl_SpecialisationMedecin">
+              <PropertyRef Name="CodeIndividu" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tbl_Utilisateur_Tbl_Individu">
+          <End Type="EPatient_dbModel.Tbl_Individu" Role="Tbl_Individu" Multiplicity="0..1" />
+          <End Type="EPatient_dbModel.Tbl_Utilisateur" Role="Tbl_Utilisateur" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_Individu">
+              <PropertyRef Name="ID_Individu" />
+            </Principal>
+            <Dependent Role="Tbl_Utilisateur">
+              <PropertyRef Name="ID_Individu" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -952,24 +1069,6 @@
               <MappingFragment StoreEntitySet="Tbl_Departement">
                 <ScalarProperty Name="Libelle" ColumnName="Libelle" />
                 <ScalarProperty Name="ID_Departement" ColumnName="ID_Departement" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Tbl_Individu">
-            <EntityTypeMapping TypeName="EPatient_dbModel.Tbl_Individu">
-              <MappingFragment StoreEntitySet="Tbl_Individu">
-                <ScalarProperty Name="ID_Sexe" ColumnName="ID_Sexe" />
-                <ScalarProperty Name="VilleNaissance" ColumnName="VilleNaissance" />
-                <ScalarProperty Name="isMedecin" ColumnName="isMedecin" />
-                <ScalarProperty Name="GroupeSanguin" ColumnName="GroupeSanguin" />
-                <ScalarProperty Name="Identification" ColumnName="Identification" />
-                <ScalarProperty Name="LieuNaissance" ColumnName="LieuNaissance" />
-                <ScalarProperty Name="DateNaissance" ColumnName="DateNaissance" />
-                <ScalarProperty Name="NomMere" ColumnName="NomMere" />
-                <ScalarProperty Name="NomPere" ColumnName="NomPere" />
-                <ScalarProperty Name="Prenom" ColumnName="Prenom" />
-                <ScalarProperty Name="Nom" ColumnName="Nom" />
-                <ScalarProperty Name="ID_Individu" ColumnName="ID_Individu" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -989,30 +1088,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Tbl_Medicament">
-            <EntityTypeMapping TypeName="EPatient_dbModel.Tbl_Medicament">
-              <MappingFragment StoreEntitySet="Tbl_Medicament">
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="CodeInternational" ColumnName="CodeInternational" />
-                <ScalarProperty Name="ID_Medicament" ColumnName="ID_Medicament" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Tbl_MedicamentPrescrit">
-            <EntityTypeMapping TypeName="EPatient_dbModel.Tbl_MedicamentPrescrit">
-              <MappingFragment StoreEntitySet="Tbl_MedicamentPrescrit">
-                <ScalarProperty Name="ID_Institution" ColumnName="ID_Institution" />
-                <ScalarProperty Name="Fin" ColumnName="Fin" />
-                <ScalarProperty Name="isExecute" ColumnName="isExecute" />
-                <ScalarProperty Name="EffeSecondaire" ColumnName="EffeSecondaire" />
-                <ScalarProperty Name="Dosage" ColumnName="Dosage" />
-                <ScalarProperty Name="Debut" ColumnName="Debut" />
-                <ScalarProperty Name="CodePrescription" ColumnName="CodePrescription" />
-                <ScalarProperty Name="CodeMedicament" ColumnName="CodeMedicament" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Tbl_Privilege">
             <EntityTypeMapping TypeName="EPatient_dbModel.Tbl_Privilege">
               <MappingFragment StoreEntitySet="Tbl_Privilege">
@@ -1026,14 +1101,6 @@
               <MappingFragment StoreEntitySet="Tbl_Sexe">
                 <ScalarProperty Name="sexe" ColumnName="sexe" />
                 <ScalarProperty Name="ID_Sexe" ColumnName="ID_Sexe" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Tbl_Specialisation">
-            <EntityTypeMapping TypeName="EPatient_dbModel.Tbl_Specialisation">
-              <MappingFragment StoreEntitySet="Tbl_Specialisation">
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="ID_Specialisation" ColumnName="ID_Specialisation" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1071,14 +1138,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <AssociationSetMapping Name="Tbl_SpecialisationMedecin" TypeName="EPatient_dbModel.Tbl_SpecialisationMedecin" StoreEntitySet="Tbl_SpecialisationMedecin">
-            <EndProperty Name="Tbl_Specialisation">
-              <ScalarProperty Name="ID_Specialisation" ColumnName="CodeSpecialisation" />
-            </EndProperty>
-            <EndProperty Name="Tbl_Individu">
-              <ScalarProperty Name="ID_Individu" ColumnName="CodeIndividu" />
-            </EndProperty>
-          </AssociationSetMapping>
           <EntitySetMapping Name="Tbl_TestPrescrit">
             <EntityTypeMapping TypeName="EPatient_dbModel.Tbl_TestPrescrit">
               <MappingFragment StoreEntitySet="Tbl_TestPrescrit">
@@ -1132,6 +1191,64 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <EntitySetMapping Name="Tbl_Utilisateur">
+            <EntityTypeMapping TypeName="EPatient_dbModel.Tbl_Utilisateur">
+              <MappingFragment StoreEntitySet="Tbl_Utilisateur">
+                <ScalarProperty Name="ID_Privilege" ColumnName="ID_Privilege" />
+                <ScalarProperty Name="ID_StatutCompte" ColumnName="ID_StatutCompte" />
+                <ScalarProperty Name="ID_Individu" ColumnName="ID_Individu" />
+                <ScalarProperty Name="username" ColumnName="username" />
+                <ScalarProperty Name="password" ColumnName="password" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="ID_Utilisateur" ColumnName="ID_Utilisateur" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tbl_GroupeSanguin">
+            <EntityTypeMapping TypeName="EPatient_dbModel.Tbl_GroupeSanguin">
+              <MappingFragment StoreEntitySet="Tbl_GroupeSanguin">
+                <ScalarProperty Name="Groupe_Sanguin" ColumnName="Groupe_Sanguin" />
+                <ScalarProperty Name="ID_Groupe_Sanguin" ColumnName="ID_Groupe_Sanguin" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="sp_specialisation_medecin" FunctionName="EPatient_dbModel.Store.sp_specialisation_medecin">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="EPatient_dbModel.sp_specialisation_medecin_Result">
+                <ScalarProperty Name="ID_Individu" ColumnName="ID_Individu" />
+                <ScalarProperty Name="Nom" ColumnName="Nom" />
+                <ScalarProperty Name="Prenom" ColumnName="Prenom" />
+                <ScalarProperty Name="isMedecin" ColumnName="isMedecin" />
+                <ScalarProperty Name="ID_Specialisation" ColumnName="ID_Specialisation" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="CodeIndividu" ColumnName="CodeIndividu" />
+                <ScalarProperty Name="CodeSpecialisation" ColumnName="CodeSpecialisation" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_specialisation" FunctionName="EPatient_dbModel.Store.sp_specialisation">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="EPatient_dbModel.sp_specialisation_Result">
+                <ScalarProperty Name="ID_Individu" ColumnName="ID_Individu" />
+                <ScalarProperty Name="Nom" ColumnName="Nom" />
+                <ScalarProperty Name="Prenom" ColumnName="Prenom" />
+                <ScalarProperty Name="isMedecin" ColumnName="isMedecin" />
+                <ScalarProperty Name="ID_Specialisation" ColumnName="ID_Specialisation" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="CodeIndividu" ColumnName="CodeIndividu" />
+                <ScalarProperty Name="CodeSpecialisation" ColumnName="CodeSpecialisation" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <EntitySetMapping Name="Tbl_SpecialisationMedecin">
+            <EntityTypeMapping TypeName="EPatient_dbModel.Tbl_SpecialisationMedecin">
+              <MappingFragment StoreEntitySet="Tbl_SpecialisationMedecin">
+                <ScalarProperty Name="ID_specialisation_medecin" ColumnName="ID_specialisation_medecin" />
+                <ScalarProperty Name="CodeIndividu" ColumnName="CodeIndividu" />
+                <ScalarProperty Name="CodeSpecialisation" ColumnName="CodeSpecialisation" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <FunctionImportMapping FunctionImportName="sp_ListeIndividu" FunctionName="EPatient_dbModel.Store.sp_ListeIndividu">
             <ResultMapping>
               <ComplexTypeMapping TypeName="EPatient_dbModel.sp_ListeIndividu_Result">
@@ -1146,20 +1263,86 @@
                 <ScalarProperty Name="isMedecin" ColumnName="isMedecin" />
                 <ScalarProperty Name="VilleNaissance" ColumnName="VilleNaissance" />
                 <ScalarProperty Name="ID_Sexe" ColumnName="ID_Sexe" />
+                <ScalarProperty Name="addresse" ColumnName="addresse" />
                 <ScalarProperty Name="age" ColumnName="age" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <EntitySetMapping Name="Tbl_Utilisateur">
-            <EntityTypeMapping TypeName="EPatient_dbModel.Tbl_Utilisateur">
-              <MappingFragment StoreEntitySet="Tbl_Utilisateur">
+          <EntitySetMapping Name="Tbl_Medicament">
+            <EntityTypeMapping TypeName="EPatient_dbModel.Tbl_Medicament">
+              <MappingFragment StoreEntitySet="Tbl_Medicament">
+                <ScalarProperty Name="cout" ColumnName="cout" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="CodeInternational" ColumnName="CodeInternational" />
+                <ScalarProperty Name="ID_Medicament" ColumnName="ID_Medicament" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tbl_MedicamentPrescrit">
+            <EntityTypeMapping TypeName="EPatient_dbModel.Tbl_MedicamentPrescrit">
+              <MappingFragment StoreEntitySet="Tbl_MedicamentPrescrit">
+                <ScalarProperty Name="cout_medicament" ColumnName="cout_medicament" />
+                <ScalarProperty Name="ID_Institution" ColumnName="ID_Institution" />
+                <ScalarProperty Name="Fin" ColumnName="Fin" />
+                <ScalarProperty Name="isExecute" ColumnName="isExecute" />
+                <ScalarProperty Name="EffeSecondaire" ColumnName="EffeSecondaire" />
+                <ScalarProperty Name="Dosage" ColumnName="Dosage" />
+                <ScalarProperty Name="Debut" ColumnName="Debut" />
+                <ScalarProperty Name="CodePrescription" ColumnName="CodePrescription" />
+                <ScalarProperty Name="CodeMedicament" ColumnName="CodeMedicament" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="sp_liste_utilisateurs" FunctionName="EPatient_dbModel.Store.sp_liste_utilisateurs">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="EPatient_dbModel.sp_liste_utilisateurs_Result">
                 <ScalarProperty Name="ID_Privilege" ColumnName="ID_Privilege" />
+                <ScalarProperty Name="Libelle" ColumnName="Libelle" />
                 <ScalarProperty Name="ID_StatutCompte" ColumnName="ID_StatutCompte" />
+                <ScalarProperty Name="libelle_statut_compte" ColumnName="libelle_statut_compte" />
                 <ScalarProperty Name="ID_Individu" ColumnName="ID_Individu" />
-                <ScalarProperty Name="username" ColumnName="username" />
-                <ScalarProperty Name="password" ColumnName="password" />
-                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="Nom" ColumnName="Nom" />
+                <ScalarProperty Name="Prenom" ColumnName="Prenom" />
                 <ScalarProperty Name="ID_Utilisateur" ColumnName="ID_Utilisateur" />
+                <ScalarProperty Name="username" ColumnName="username" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <EntitySetMapping Name="Tbl_Autorisation_Patient">
+            <EntityTypeMapping TypeName="EPatient_dbModel.Tbl_Autorisation_Patient">
+              <MappingFragment StoreEntitySet="Tbl_Autorisation_Patient">
+                <ScalarProperty Name="ID_Utilisateur" ColumnName="ID_Utilisateur" />
+                <ScalarProperty Name="ID_Individu" ColumnName="ID_Individu" />
+                <ScalarProperty Name="ID_Autorisation" ColumnName="ID_Autorisation" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tbl_Specialisation">
+            <EntityTypeMapping TypeName="EPatient_dbModel.Tbl_Specialisation">
+              <MappingFragment StoreEntitySet="Tbl_Specialisation">
+                <ScalarProperty Name="codeSpecialisation" ColumnName="codeSpecialisation" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="ID_Specialisation" ColumnName="ID_Specialisation" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tbl_Individu">
+            <EntityTypeMapping TypeName="EPatient_dbModel.Tbl_Individu">
+              <MappingFragment StoreEntitySet="Tbl_Individu">
+                <ScalarProperty Name="addresse" ColumnName="addresse" />
+                <ScalarProperty Name="ID_Sexe" ColumnName="ID_Sexe" />
+                <ScalarProperty Name="VilleNaissance" ColumnName="VilleNaissance" />
+                <ScalarProperty Name="isMedecin" ColumnName="isMedecin" />
+                <ScalarProperty Name="GroupeSanguin" ColumnName="GroupeSanguin" />
+                <ScalarProperty Name="Identification" ColumnName="Identification" />
+                <ScalarProperty Name="LieuNaissance" ColumnName="LieuNaissance" />
+                <ScalarProperty Name="DateNaissance" ColumnName="DateNaissance" />
+                <ScalarProperty Name="NomMere" ColumnName="NomMere" />
+                <ScalarProperty Name="NomPere" ColumnName="NomPere" />
+                <ScalarProperty Name="Prenom" ColumnName="Prenom" />
+                <ScalarProperty Name="Nom" ColumnName="Nom" />
+                <ScalarProperty Name="ID_Individu" ColumnName="ID_Individu" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

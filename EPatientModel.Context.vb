@@ -25,13 +25,9 @@ Partial Public Class EPatient_dbEntities
     End Sub
 
     Public Overridable Property Tbl_Departement() As DbSet(Of Tbl_Departement)
-    Public Overridable Property Tbl_Individu() As DbSet(Of Tbl_Individu)
     Public Overridable Property Tbl_Institution() As DbSet(Of Tbl_Institution)
-    Public Overridable Property Tbl_Medicament() As DbSet(Of Tbl_Medicament)
-    Public Overridable Property Tbl_MedicamentPrescrit() As DbSet(Of Tbl_MedicamentPrescrit)
     Public Overridable Property Tbl_Privilege() As DbSet(Of Tbl_Privilege)
     Public Overridable Property Tbl_Sexe() As DbSet(Of Tbl_Sexe)
-    Public Overridable Property Tbl_Specialisation() As DbSet(Of Tbl_Specialisation)
     Public Overridable Property Tbl_StatutCompte() As DbSet(Of Tbl_StatutCompte)
     Public Overridable Property Tbl_TestLaboratoire() As DbSet(Of Tbl_TestLaboratoire)
     Public Overridable Property Tbl_TypeInstitution() As DbSet(Of Tbl_TypeInstitution)
@@ -39,6 +35,13 @@ Partial Public Class EPatient_dbEntities
     Public Overridable Property Tbl_TestPrescrit() As DbSet(Of Tbl_TestPrescrit)
     Public Overridable Property Tbl_Prescription() As DbSet(Of Tbl_Prescription)
     Public Overridable Property Tbl_Utilisateur() As DbSet(Of Tbl_Utilisateur)
+    Public Overridable Property Tbl_GroupeSanguin() As DbSet(Of Tbl_GroupeSanguin)
+    Public Overridable Property Tbl_SpecialisationMedecin() As DbSet(Of Tbl_SpecialisationMedecin)
+    Public Overridable Property Tbl_Medicament() As DbSet(Of Tbl_Medicament)
+    Public Overridable Property Tbl_MedicamentPrescrit() As DbSet(Of Tbl_MedicamentPrescrit)
+    Public Overridable Property Tbl_Autorisation_Patient() As DbSet(Of Tbl_Autorisation_Patient)
+    Public Overridable Property Tbl_Specialisation() As DbSet(Of Tbl_Specialisation)
+    Public Overridable Property Tbl_Individu() As DbSet(Of Tbl_Individu)
 
     Public Overridable Function sp_presciption_patient_medecin() As ObjectResult(Of sp_presciption_patient_medecin_Result)
         Return DirectCast(Me, IObjectContextAdapter).ObjectContext.ExecuteFunction(Of sp_presciption_patient_medecin_Result)("sp_presciption_patient_medecin")
@@ -48,8 +51,20 @@ Partial Public Class EPatient_dbEntities
         Return DirectCast(Me, IObjectContextAdapter).ObjectContext.ExecuteFunction(Of sp_individu_Result)("sp_individu")
     End Function
 
+    Public Overridable Function sp_specialisation_medecin() As ObjectResult(Of sp_specialisation_medecin_Result)
+        Return DirectCast(Me, IObjectContextAdapter).ObjectContext.ExecuteFunction(Of sp_specialisation_medecin_Result)("sp_specialisation_medecin")
+    End Function
+
+    Public Overridable Function sp_specialisation() As ObjectResult(Of sp_specialisation_Result)
+        Return DirectCast(Me, IObjectContextAdapter).ObjectContext.ExecuteFunction(Of sp_specialisation_Result)("sp_specialisation")
+    End Function
+
     Public Overridable Function sp_ListeIndividu() As ObjectResult(Of sp_ListeIndividu_Result)
         Return DirectCast(Me, IObjectContextAdapter).ObjectContext.ExecuteFunction(Of sp_ListeIndividu_Result)("sp_ListeIndividu")
+    End Function
+
+    Public Overridable Function sp_liste_utilisateurs() As ObjectResult(Of sp_liste_utilisateurs_Result)
+        Return DirectCast(Me, IObjectContextAdapter).ObjectContext.ExecuteFunction(Of sp_liste_utilisateurs_Result)("sp_liste_utilisateurs")
     End Function
 
 End Class

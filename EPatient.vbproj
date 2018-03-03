@@ -74,7 +74,7 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="encrypteway.vb" />
+    <Compile Include="Cls_encrypteway.vb" />
     <Compile Include="EPatientModel.Context.vb">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -90,9 +90,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>EPatientModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Individu.vb" />
-    <Compile Include="Institution.vb" />
-    <Compile Include="Medicament.vb" />
+    <Compile Include="Cls_Individu.vb" />
+    <Compile Include="Cls_Institution.vb" />
+    <Compile Include="Cls_Medicament.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -108,19 +108,35 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="Prescription.vb" />
-    <Compile Include="Sexe.vb" />
-    <Compile Include="Specialisation.vb" />
+    <Compile Include="Cls_Prescription.vb" />
+    <Compile Include="Cls_Privilege.vb" />
+    <Compile Include="Cls_Sexe.vb" />
+    <Compile Include="Cls_Specialisation.vb" />
     <Compile Include="sp_individu_Result.vb">
       <DependentUpon>EPatientModel.tt</DependentUpon>
     </Compile>
     <Compile Include="sp_ListeIndividu_Result.vb">
       <DependentUpon>EPatientModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="sp_liste_utilisateurs_Result.vb">
+      <DependentUpon>EPatientModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="sp_presciption_patient_medecin_Result.vb">
       <DependentUpon>EPatientModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="sp_specialisation_medecin_Result.vb">
+      <DependentUpon>EPatientModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="sp_specialisation_Result.vb">
+      <DependentUpon>EPatientModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Tbl_Autorisation_Patient.vb">
+      <DependentUpon>EPatientModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Tbl_Departement.vb">
+      <DependentUpon>EPatientModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Tbl_GroupeSanguin.vb">
       <DependentUpon>EPatientModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Tbl_Individu.vb">
@@ -147,6 +163,9 @@
     <Compile Include="Tbl_Specialisation.vb">
       <DependentUpon>EPatientModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Tbl_SpecialisationMedecin.vb">
+      <DependentUpon>EPatientModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Tbl_StatutCompte.vb">
       <DependentUpon>EPatientModel.tt</DependentUpon>
     </Compile>
@@ -165,6 +184,7 @@
     <Compile Include="Tbl_Ville.vb">
       <DependentUpon>EPatientModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Cls_Utilisateur.vb" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="My Project\Resources.resx">

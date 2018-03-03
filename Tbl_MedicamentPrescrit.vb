@@ -20,6 +20,7 @@ Partial Public Class Tbl_MedicamentPrescrit
     Public Property isExecute As Nullable(Of Boolean)
     Public Property Fin As Nullable(Of Date)
     Public Property ID_Institution As Nullable(Of Long)
+    Public Property cout_medicament As Nullable(Of Decimal)
 
     Public Overridable Property Tbl_Institution As Tbl_Institution
     Public Overridable Property Tbl_Medicament As Tbl_Medicament

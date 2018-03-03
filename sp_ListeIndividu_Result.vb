@@ -22,6 +22,7 @@ Partial Public Class sp_ListeIndividu_Result
     Public Property isMedecin As Nullable(Of Boolean)
     Public Property VilleNaissance As Nullable(Of Long)
     Public Property ID_Sexe As Nullable(Of Short)
+    Public Property addresse As String
     Public Property age As Nullable(Of Integer)
 
 End Class

@@ -10,11 +10,15 @@
 Imports System
 Imports System.Collections.Generic
 
-Partial Public Class Tbl_Specialisation
-    Public Property ID_Specialisation As Long
-    Public Property Description As String
-    Public Property codeSpecialisation As String
-
-    Public Overridable Property Tbl_SpecialisationMedecin As ICollection(Of Tbl_SpecialisationMedecin) = New HashSet(Of Tbl_SpecialisationMedecin)
+Partial Public Class sp_liste_utilisateurs_Result
+    Public Property ID_Privilege As Short
+    Public Property Libelle As String
+    Public Property ID_StatutCompte As Short
+    Public Property libelle_statut_compte As String
+    Public Property ID_Individu As Long
+    Public Property Nom As String
+    Public Property Prenom As String
+    Public Property ID_Utilisateur As Long
+    Public Property username As String
 
 End Class

@@ -23,8 +23,8 @@ Partial Public Class Tbl_Institution
     Public Property ID_localisation As Nullable(Of Long)
 
     Public Overridable Property Tbl_TypeInstitution As Tbl_TypeInstitution
-    Public Overridable Property Tbl_MedicamentPrescrit As ICollection(Of Tbl_MedicamentPrescrit) = New HashSet(Of Tbl_MedicamentPrescrit)
     Public Overridable Property Tbl_Ville As Tbl_Ville
     Public Overridable Property Tbl_TestPrescrit As ICollection(Of Tbl_TestPrescrit) = New HashSet(Of Tbl_TestPrescrit)
+    Public Overridable Property Tbl_MedicamentPrescrit As ICollection(Of Tbl_MedicamentPrescrit) = New HashSet(Of Tbl_MedicamentPrescrit)
 
 End Class
